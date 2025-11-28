@@ -1,0 +1,169 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// 1. Configuração do Gerador e do Banco de Dados
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql" // Baseado nos seus relatórios [cite: 27]
+  url      = env("DATABASE_URL") // Puxa a URL do seu arquivo .env
+}
+
+// 2. Enums (do seu relatório) [cite: 150-187]
+enum UserStatus {
+  PENDING
+  ACTIVE
+  TRIAL
+  SUSPENDED
+  CANCELED
+}
+
+enum CategoryType {
+  INCOME
+  EXPENSE
+  INVESTMENT
+}
+
+enum TransactionType {
+  INCOME
+  EXPENSE
+  INVESTMENT
+}
+
+enum RecurrenceType {
+  MONTHLY
+  WEEKLY
+  YEARLY
+  CUSTOM
+}
+
+enum InvestmentType {
+  STOCKS
+  CRYPTO
+  REAL_ESTATE
+  FIXED_INCOME
+  FUNDS
+  OTHER
+}
+
+// 3. Modelos do Aplicativo (do seu relatório) [cite: 81-147]
+
+model User {
+  id               String       @id @default(cuid())
+  name             String?
+  email            String       @unique
+  password         String
+  phone            String?      @unique // <-- NOVA ADIÇÃO (FASE 1)
+  role             String       @default("user")
+  status           UserStatus   @default(PENDING)
+  isActive         Boolean? // (legado usar status)
+  hotmartId        String?      @unique
+  resetToken       String?
+  resetTokenExpiry DateTime?
+  firstLogin       Boolean      @default(true)
+  lgpdConsentAt    DateTime?
+  canceledAt       DateTime?
+  createdAt        DateTime     @default(now())
+  updatedAt        DateTime     @updatedAt
+
+  // Relações
+  categories    Category[]
+  transactions  Transaction[]
+  investments   Investment[]
+  goals         Goal[]
+  aiAnalyses    AiAnalysis[]
+  whatsAppLinks WhatsAppLink[] // <-- NOVA ADIÇÃO (FASE 1)
+}
+
+model Category {
+  id        String       @id @default(cuid())
+  name      String
+  type      CategoryType
+  color     String?
+  userId    String
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+
+  // Relações
+  user         User          @relation(fields: [userId], references: [id])
+  transactions Transaction[]
+
+  @@unique([userId, name, type])
+}
+
+model Transaction {
+  id              String           @id @default(cuid())
+  amount          Decimal          @db.Decimal(12, 2)
+  description     String
+  date            DateTime
+  type            TransactionType
+  isRecurring     Boolean          @default(false)
+  recurrenceType  RecurrenceType?
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+
+  // Relações
+  categoryId String
+  category   Category @relation(fields: [categoryId], references: [id])
+  userId     String
+  user       User     @relation(fields: [userId], references: [id])
+}
+
+model Investment {
+  id               String         @id @default(cuid())
+  name             String
+  type             InvestmentType
+  initialAmount    Decimal        @db.Decimal(12, 2)
+  currentAmount    Decimal        @db.Decimal(12, 2)
+  profitPercentage Decimal?       @db.Decimal(5, 2)
+  startDate        DateTime
+  notes            String?
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+
+  // Relações
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+}
+
+model Goal {
+  id            String   @id @default(cuid())
+  name          String
+  targetAmount  Decimal  @db.Decimal(12, 2)
+  currentAmount Decimal  @db.Decimal(12, 2) @default(0)
+  deadline      DateTime
+  completed     Boolean  @default(false)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  // Relações
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+}
+
+model AiAnalysis {
+  id        String   @id @default(cuid())
+  userId    String
+  month     Int
+  year      Int
+  analysis  String // (JSON/Text)
+  createdAt DateTime @default(now())
+
+  // Relações
+  user User @relation(fields: [userId], references: [id])
+}
+
+// 4. NOVO MODELO (FASE 1) [cite: 1311-1324]
+model WhatsAppLink {
+  id         String   @id @default(cuid())
+  phone      String   @unique // O número de WhatsApp
+  isVerified Boolean  @default(false)
+  createdAt  DateTime @default(now())
+  verifiedAt DateTime?
+
+  // Relação com o usuário
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+}

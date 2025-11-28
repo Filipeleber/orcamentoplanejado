@@ -1,0 +1,180 @@
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Cores da marca - Dark Mode */
+  --primary: #00bf63; /* Verde principal */
+  --primary-dark: #00a555;
+  --secondary: #737373; /* Cinza */
+  --background: #000000; /* Preto */
+  --foreground: #ffffff; /* Branco */
+  --muted: #1a1a1a;
+  --card-bg: #0d0d0d;
+  --border: #2a2a2a;
+  --success: #00bf63;
+  --danger: #dc3545;
+  --warning: #ffc107;
+  --info: #17a2b8;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-[#00bf63] hover:bg-[#00a555] text-white font-medium px-4 py-2 rounded-lg transition-all shadow-lg shadow-[#00bf63]/20 hover:shadow-[#00bf63]/40;
+  }
+  
+  .btn-secondary {
+    @apply bg-[#2a2a2a] hover:bg-[#3a3a3a] text-white font-medium px-4 py-2 rounded-lg transition-colors border border-[#2a2a2a];
+  }
+
+  .btn-outline {
+    @apply border-2 border-[#00bf63] text-[#00bf63] hover:bg-[#00bf63] hover:text-white font-medium px-4 py-2 rounded-lg transition-colors;
+  }
+
+  .card {
+    @apply bg-gradient-to-br from-[#0d0d0d] to-[#121212] rounded-lg shadow-xl border border-[#2a2a2a] p-6;
+  }
+
+  /* Card com hover glow verde */
+  .card-hover-glow {
+    @apply bg-gradient-to-br from-[#0d0d0d] to-[#121212] rounded-lg shadow-xl border border-[#2a2a2a] p-6 transition-all duration-300 hover:shadow-2xl hover:shadow-[#00bf63]/10 hover:border-[#00bf63]/30;
+  }
+
+  .input {
+    @apply w-full px-3 py-2 bg-[#1a1a1a] border border-[#2a2a2a] text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00bf63] focus:border-transparent placeholder-[#737373] transition-all;
+  }
+
+  .text-primary {
+    @apply text-[#00bf63];
+  }
+
+  .text-secondary {
+    @apply text-[#737373];
+  }
+
+  .bg-primary {
+    @apply bg-[#00bf63];
+  }
+
+  .bg-secondary {
+    @apply bg-[#1a1a1a];
+  }
+
+  .border-primary {
+    @apply border-[#00bf63];
+  }
+
+  /* Tooltip customizado */
+  .custom-tooltip {
+    @apply invisible absolute z-50 px-3 py-2 text-sm text-white/85 bg-[#0d0d0d] border border-[#2a2a2a] rounded-lg shadow-xl opacity-0 transition-opacity duration-200;
+  }
+
+  .tooltip-trigger:hover .custom-tooltip {
+    @apply visible opacity-100;
+  }
+}
+
+/* Animações customizadas */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideIn {
+  from { transform: translateX(-20px); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes slideInRight {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 20px rgba(0, 191, 99, 0.3); }
+  50% { box-shadow: 0 0 30px rgba(0, 191, 99, 0.5); }
+}
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.5s ease-out;
+}
+
+.animate-slide-in {
+  animation: slideIn 0.3s ease-out;
+}
+
+.animate-slide-in-right {
+  animation: slideInRight 0.3s ease-out;
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.3s ease-out;
+}
+
+/* Scrollbar customizada - Dark Mode */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0d0d0d;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #00bf63;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #00a555;
+}
+
+/* Custom scrollbar para containers específicos */
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #2a2a2a #0d0d0d;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #0d0d0d;
+  border-radius: 3px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #2a2a2a;
+  border-radius: 3px;
+  transition: background 0.2s;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #00bf63;
+}
