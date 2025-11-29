@@ -167,6 +167,8 @@ model Investment {
   // Relações
   userId String
   user   User   @relation(fields: [userId], references: [id])
+  goalId String?
+  goal   Goal?   @relation(fields: [goalId], references: [id])
 }
 
 model Goal {
@@ -182,6 +184,7 @@ model Goal {
   // Relações
   userId String
   user   User   @relation(fields: [userId], references: [id])
+  investments Investment[]
 }
 
 model AiAnalysis {
