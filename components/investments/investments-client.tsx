@@ -2,7 +2,12 @@
 
 import React from "react";
 
-export const InvestmentsClient = () => {
+interface InvestmentsClientProps {
+  initialGoals: any[];
+  initialInvestments: any[];
+}
+
+export const InvestmentsClient = ({ initialGoals, initialInvestments }: InvestmentsClientProps) => {
   return (
     <div>
       <h1 className="text-2xl font-bold">Investimentos</h1>
