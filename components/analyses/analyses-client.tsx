@@ -2,7 +2,7 @@
 
 import React from "react";
 
-export default function AnalysesClient() {
+export const AnalysesClient = () => {
   return (
     <div>
       <h1 className="text-2xl font-bold">Análises</h1>

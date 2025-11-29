@@ -2,7 +2,7 @@
 
 import React from "react";
 
-export default function InvestmentsClient() {
+export const InvestmentsClient = () => {
   return (
     <div>
       <h1 className="text-2xl font-bold">Investimentos</h1>

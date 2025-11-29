@@ -2,7 +2,7 @@
 
 import React from "react";
 
-export default function DashboardClient() {
+export const DashboardClient = () => {
   return (
     <div>
       <h1 className="text-3xl font-bold tracking-tight">Dashboard Principal</h1>
