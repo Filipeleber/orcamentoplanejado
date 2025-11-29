@@ -21,7 +21,7 @@ export default async function InvestmentsPage() {
     include: {
       investments: {
         orderBy: {
-          date: 'desc',
+          startDate: 'desc',
         },
       },
     },
@@ -39,7 +39,7 @@ export default async function InvestmentsPage() {
       goal: true,
     },
     orderBy: {
-      date: 'desc',
+      startDate: 'desc',
     },
   })
 
